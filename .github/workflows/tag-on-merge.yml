@@ -16,18 +16,23 @@ on:
   pull_request:
     types: [closed]
 
-permissions:
-  contents: write
-  actions: write
+permissions: {}
 
 jobs:
   tag:
     name: Create Release Tag
+    permissions:
+      contents: write
+      actions: write
     if: >-
       github.event.pull_request.merged == true &&
       startsWith(github.event.pull_request.head.ref, 'release/v')
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          fetch-depth: 1
       - name: Create tag
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -44,9 +49,10 @@ jobs:
             exit 1
           fi
 
-          gh api "repos/$REPO/git/refs" \
-            -f ref="refs/tags/$TAG" \
-            -f sha="$SHA"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git tag -a "$TAG" "$SHA" -m "Release $TAG"
+          git push origin "$TAG"
 
           echo "Tag $TAG created on $SHA"
 
