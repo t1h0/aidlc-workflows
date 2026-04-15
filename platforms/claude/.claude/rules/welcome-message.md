@@ -1,4 +1,4 @@
-# AI-DLC Welcome Message
+# AI-DLC Welcome Message Rules
 
 **Purpose**: This file contains the user-facing welcome message that should be displayed ONCE at the start of any AI-DLC workflow.
 
