@@ -1,3 +1,8 @@
+---
+name: aidlc-2-1-1-construction-functional-design
+description: This skill executes the Functional Design stage of the Construction phase in AI-DLC, which includes detailed business logic design per unit.
+---
+
 # Functional Design
 
 ## Purpose

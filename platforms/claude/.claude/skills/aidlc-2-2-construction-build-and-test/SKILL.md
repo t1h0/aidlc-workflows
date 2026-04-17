@@ -1,3 +1,8 @@
+---
+name: aidlc-2-2-construction-build-and-test
+description: This skill executes the Build and Test stage of the Construction phase in AI-DLC, which includes generating build instructions, test execution instructions, and summarizing results.
+---
+
 # Build and Test
 
 **Purpose**: Build all units and execute comprehensive testing strategy

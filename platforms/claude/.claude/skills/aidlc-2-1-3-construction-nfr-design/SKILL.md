@@ -1,3 +1,8 @@
+---
+name: aidlc-2-1-3-construction-nfr-design
+description: This skill executes the NFR Design stage of the Construction phase in AI-DLC, which includes incorporating NFR requirements into unit design using patterns and logical components.
+---
+
 # NFR Design
 
 ## Prerequisites

@@ -1,3 +1,8 @@
+---
+name: aidlc-2-1-2-construction-nfr-requirements
+description: This skill executes the NFR Requirements stage of the Construction phase in AI-DLC, which includes determining non-functional requirements and making tech stack choices.
+---
+
 # NFR Requirements
 
 ## Prerequisites

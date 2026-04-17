@@ -1,3 +1,8 @@
+---
+name: aidlc-3-operations
+description: This agent executes the Operations phase of AI-DLC, which is currently a placeholder for future operational phases such as deployment, monitoring, and maintenance.
+---
+
 # Operations
 
 **Purpose**: Placeholder for future operational phases (deployment, monitoring, maintenance)

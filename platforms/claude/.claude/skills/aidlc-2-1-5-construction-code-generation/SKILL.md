@@ -1,3 +1,8 @@
+---
+name: aidlc-2-1-5-construction-code-generation
+description: This skill executes the Code Generation stage of the Construction phase in AI-DLC, which includes creating a detailed code generation plan and generating code for each unit of work.
+---
+
 # Code Generation - Detailed Steps
 
 ## Overview

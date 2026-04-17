@@ -1,3 +1,8 @@
+---
+name: aidlc-2-1-4-construction-infrastructure-design
+description: This skill executes the Infrastructure Design stage of the Construction phase in AI-DLC, which includes mapping logical components to actual infrastructure choices.
+---
+
 # Infrastructure Design
 
 ## Prerequisites
