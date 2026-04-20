@@ -49,6 +49,8 @@ AI-DLC is a structured yet flexible software development process that adapts to 
         |   - Infrastructure Design (COND)      |
         |   - Code Generation (ALWAYS)          |
         | * Build and Test (ALWAYS)             |
+        | * Plan Review (ALWAYS)                |
+        |   -> Loops back if gaps found         |
         +---------------------------------------+
                               |
                               v
@@ -73,9 +75,9 @@ AI-DLC is a structured yet flexible software development process that adapts to 
 
 **CONSTRUCTION PHASE** - *Detailed Design, Implementation & Test*
 - **Purpose**: Determines HOW to build it
-- **Activities**: Detailed design (when needed), code generation, comprehensive testing
-- **Output**: Working code, tests, build instructions
-- **Your Role**: Review designs, approve implementation plans, validate results
+- **Activities**: Detailed design (when needed), code generation, comprehensive testing, plan review
+- **Output**: Working code, tests, build instructions, plan review report
+- **Your Role**: Review designs, approve implementation plans, validate results, confirm plan coverage
 
 **OPERATIONS PHASE** - *Deployment & Monitoring (Future)*
 - **Purpose**: How to DEPLOY and RUN it

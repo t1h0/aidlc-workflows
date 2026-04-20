@@ -51,8 +51,9 @@
 - Infrastructure Design (CONDITIONAL, per-unit)
 - Code Generation (ALWAYS) — includes Part 1: Planning and Part 2: Generation
 - Build and Test (ALWAYS)
+- Plan Review (ALWAYS)
 
-**Outputs**: Design artifacts, NFR implementations, code, tests
+**Outputs**: Design artifacts, NFR implementations, code, tests, plan review report
 
 ### OPERATIONS PHASE
 **Purpose**: Deployment and operational readiness  
@@ -74,6 +75,7 @@
 - **Workflow Planning**: Creating execution plan for which phases to run
 - **Code Generation**: Single stage with two parts — Part 1 (Planning) creates detailed implementation plans, Part 2 (Generation) generates actual code based on plans and prior artifacts
 - **Build and Test**: Building all units and executing comprehensive testing
+- **Plan Review**: Reviewing implementation against inception plan, looping back to Construction if gaps are found
 
 ### Conditional Stages
 - **Reverse Engineering**: Analyzing existing codebase (brownfield projects only)

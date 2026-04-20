@@ -338,7 +338,7 @@ Present completion message in this structure:
 > **You may:**
 >
 > 🔧 **Request Changes** - Ask for modifications to the build and test instructions based on your review
-> ✅ **Approve & Continue** - Approve build and test results and proceed to **Operations**
+> ✅ **Approve & Continue** - Approve build and test results and proceed to **Plan Review**
 
 ---
 ```

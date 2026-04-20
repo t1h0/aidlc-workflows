@@ -307,6 +307,7 @@ The AI model intelligently assesses what stages are needed based on:
   - Infrastructure Design (CONDITIONAL, per-unit)
   - Code Generation (ALWAYS, per-unit)
 - Build and Test (ALWAYS - after all units complete)
+- Plan Review (ALWAYS - after Build and Test)
 
 **Note**: Each unit is completed fully (design + code) before moving to the next unit.
 
@@ -436,8 +437,26 @@ The AI model intelligently assesses what stages are needed based on:
    - Performance test instructions (if applicable)
    - Additional test instructions as needed (contract tests, security tests, e2e tests)
 4. Create instruction files in build-and-test/ subdirectory: build-instructions.md, unit-test-instructions.md, integration-test-instructions.md, performance-test-instructions.md, build-and-test-summary.md
-5. **Wait for Explicit Approval**: Ask: "**Build and test instructions complete. Ready to proceed to Operations stage?**" - DO NOT PROCEED until user confirms
+5. **Wait for Explicit Approval**: Ask: "**Build and test instructions complete. Ready to proceed to Plan Review?**" - DO NOT PROCEED until user confirms
 6. **MANDATORY**: Log user's response in audit.md with complete raw input
+
+---
+
+## Plan Review (ALWAYS EXECUTE)
+
+1. **MANDATORY**: Log any user input during this phase in audit.md
+2. Load all steps from the `aidlc-2-3-construction-plan-review` skill
+3. Review implementation against inception artifacts:
+   - Check every requirement from requirements.md against the implementation
+   - Check every user story (if exists) against the implementation
+   - Verify design compliance against application design artifacts (if exists)
+   - Verify unit of work completion (if exists)
+4. Generate plan review report in `aidlc-docs/construction/plan-review/plan-review-report.md`
+5. **If gaps found**: Present gaps to user with option to loop back to Construction to address them
+6. **If no gaps found**: Confirm all inception plans are fulfilled
+7. **Wait for Explicit Approval**: User must choose between "Request Changes", "Address Gaps" (if gaps found), or "Approve & Continue" - DO NOT PROCEED until user confirms
+8. **If user chooses to address gaps**: Create gap resolution plan, re-enter Construction per-unit loop for affected units, then repeat Build and Test and Plan Review
+9. **MANDATORY**: Log user's response in audit.md with complete raw input
 
 ---
 
@@ -554,7 +573,8 @@ The Operations stage will eventually include:
 │   │   │   ├── nfr-design/
 │   │   │   ├── infrastructure-design/
 │   │   │   └── code/               # Markdown summaries only
-│   │   └── build-and-test/
+│   │   ├── build-and-test/
+│   │   └── plan-review/
 │   ├── operations/                 # 🟡 OPERATIONS PHASE (placeholder)
 │   ├── aidlc-state.md
 │   └── audit.md
