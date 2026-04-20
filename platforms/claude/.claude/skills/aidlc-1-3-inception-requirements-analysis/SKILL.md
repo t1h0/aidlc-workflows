@@ -108,7 +108,7 @@ Analyze whatever the user has provided:
 
 ### Step 5.1: Extension Opt-In Prompts
 
-**MANDATORY**: AI-DLC extensions are skills named `aidlc-ext-*`. For each extension, include an opt-in question based on its description in the clarifying questions file created in Step 6.
+**MANDATORY**: AI-DLC extensions are skills named `aidlc-ext-*`. For each extension, include an opt-in question based on its description in the clarifying questions file created in Step 6. Present each opt-in question in the same language as the user's conversation.
 
 After receiving answers:
 
