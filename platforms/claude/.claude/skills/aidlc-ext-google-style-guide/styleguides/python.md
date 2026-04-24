@@ -4,70 +4,51 @@
 
 ### 1.1 Lint
 
-Run `pylint` over your code using this [pylintrc](https://google.github.io/styleguide/pylintrc).
+Run `ruff check` over your code.
 
-#### 1.1.1 Definition
+#### 1.1.1 Decision
 
-`pylint`
-is a tool for finding bugs and style problems in Python source code. It finds
-problems that are typically caught by a compiler for less dynamic languages like
-C and C++. Because of the dynamic nature of Python, some
-warnings may be incorrect; however, spurious warnings should be fairly
-infrequent.
-
-#### 1.1.2 Decision
-
-Make sure you run
-`pylint`
-on your code.
+Make sure you run `ruff check` on your code.
 
 Suppress warnings if they are inappropriate so that other issues are not hidden.
-To suppress warnings, you can set a line-level comment:
+To suppress a warning on a specific line, use a `# noqa` comment with the rule
+code:
 
 ```python
-def do_PUT(self):  # WSGI name, so pylint: disable=invalid-name
+def do_PUT(self):  # noqa: N802 - WSGI name
   ...
 ```
 
-`pylint`
-warnings are each identified by symbolic name (`empty-docstring`)
-Google-specific warnings start with `g-`.
-
-If the reason for the suppression is not clear from the symbolic name, add an
-explanation.
+`ruff` warnings are each identified by a rule code (e.g., `E501`, `N802`,
+`F401`). If the reason for the suppression is not clear from the rule code, add
+an explanation.
 
 Suppressing in this way has the advantage that we can easily search for
 suppressions and revisit them.
 
-You can get a list of
-`pylint`
-warnings by doing:
+To get a description of a particular rule, use:
 
 ```shell
-pylint --list-msgs
+ruff rule N802
 ```
 
-To get more information on a particular message, use:
+To list all available rules, use:
 
 ```shell
-pylint --help-msg=invalid-name
+ruff rule --all
 ```
 
-Prefer `pylint: disable` to the deprecated older form `pylint: disable-msg`.
-
-Unused argument warnings can be suppressed by deleting the variables at the
-beginning of the function. Always include a comment explaining why you are
-deleting it. "Unused." is sufficient. For example:
+Unused argument warnings can be suppressed by prefixing the argument name with
+`_`. Always ensure the name still conveys intent. For example:
 
 ```python
-def viking_cafe_order(spam: str, beans: str, eggs: str | None = None) -> str:
-    del beans, eggs  # Unused by vikings.
+def viking_cafe_order(spam: str, _beans: str, _eggs: str | None = None) -> str:
     return spam + spam + spam
 ```
 
-Other common forms of suppressing this warning include using '`_`' as the
-identifier for the unused argument or prefixing the argument name with
-'`unused_`', or assigning them to '`_`'. These forms are allowed but no longer
+Other common forms of suppressing this warning include deleting the variables at
+the beginning of the function with a comment, or assigning them to '`_`'. These
+forms are allowed but no longer
 encouraged. These break callers that pass arguments by name and do not enforce
 that the arguments are actually unused.
 
@@ -765,7 +746,7 @@ Use other `from __future__` import statements as you see fit.
 
 You can annotate Python code with
 [type hints](https://docs.python.org/3/library/typing.html). Type-check the code
-at build time with a type checking tool like [pytype](https://github.com/google/pytype).
+at build time with [ty](https://github.com/astral-sh/ty).
 In most cases, when feasible, type annotations are in source files. For
 third-party or extension modules, annotations can be in
 [stub `.pyi` files](https://peps.python.org/pep-0484/#stub-files).
@@ -789,13 +770,12 @@ a: SomeType = some_func()
 
 You are strongly encouraged to enable Python type analysis when updating code.
 When adding or modifying public APIs, include type annotations and enable
-checking via pytype in the build system. As static analysis is relatively new to
-Python, we acknowledge that undesired side-effects (such as
-wrongly
-inferred types) may prevent adoption by some projects. In those situations,
-authors are encouraged to add a comment with a TODO or link to a bug describing
-the issue(s) currently preventing type annotation adoption in the BUILD file or
-in the code itself as appropriate.
+checking via `ty` in the build system. As static analysis is relatively new to
+Python, we acknowledge that undesired side-effects (such as wrongly inferred
+types) may prevent adoption by some projects. In those situations, authors are
+encouraged to add a comment with a TODO or link to a bug describing the issue(s)
+currently preventing type annotation adoption in the BUILD file or in the code
+itself as appropriate.
 
 ## 2 Python Style Rules
 
@@ -814,7 +794,7 @@ Explicit exceptions to the 80 character limit:
 - URLs, pathnames, or long flags in comments.
 - Long string module-level constants not containing whitespace that would be
     inconvenient to split across lines such as URLs or pathnames.
-  - Pylint disable comments. (e.g.: `# pylint: disable=invalid-name`)
+  - Ruff noqa comments. (e.g.: `# noqa: E501`)
 
 Do not use a backslash for
 [explicit line continuation](https://docs.python.org/3/reference/lexical_analysis.html#explicit-line-joining).
@@ -920,7 +900,7 @@ above; see the [indentation](#24-indentation) section for explanation.
 limit.
 
 In all other cases where a line exceeds 80 characters, and the
-[Black](https://github.com/psf/black) or [Pyink](https://github.com/google/pyink)
+[ruff format](https://docs.astral.sh/ruff/formatter/)
 auto-formatter does not help bring the line below the limit, the line is allowed
 to exceed this maximum. Authors are encouraged to manually break the line up per
 the notes above when it is sensible.
@@ -1035,7 +1015,7 @@ Trailing commas in sequences of items are recommended only when the closing
 container token `]`, `)`, or `}` does not appear on the same line as the final
 element, as well as for tuples with a single element. The presence of a trailing
 comma is also used as a hint to our Python code auto-formatter
-[Black](https://github.com/psf/black) or [Pyink](https://github.com/google/pyink)
+[ruff format](https://docs.astral.sh/ruff/formatter/)
 to direct it to auto-format the container of items to one item per line when the
 `,` after the final element is present.
 
@@ -1884,19 +1864,6 @@ grouped from most generic to least generic:
     from otherproject.ai import mind
     ```
 
-5. **Deprecated:** application-specific imports that are part of the same
-    top-level
-    sub-package as this file. For example:
-
-    ```python
-    from myproject.backend.hgwells import time_machine
-    ```
-
-    You may find older Google Python Style code doing this, but it is no longer
-    required. **New code is encouraged not to bother with this.** Simply treat
-    application-specific sub-package imports the same as other sub-package
-    imports.
-
 Within each grouping, imports should be sorted lexicographically, ignoring case,
 according to each module's full package path (the `path` in `from path import
 ...`). Code may optionally place a blank line between import sections.
@@ -2088,9 +2055,9 @@ When using names based on established notation:
     accessible, clearly document the naming conventions.
 2. Prefer PEP8-compliant `descriptive_names` for public APIs, which are much
     more likely to be encountered out of context.
-3. Use a narrowly-scoped `pylint: disable=invalid-name` directive to silence
-    warnings. For just a few variables, use the directive as an endline comment
-    for each one; for more, apply the directive at the beginning of a block.
+3. Use a narrowly-scoped `# noqa: N802` comment to silence naming warnings.
+    For just a few variables, use it as an endline comment for each one; for
+    more, configure a per-file `noqa` override in `ruff.toml`.
 
 ### 2.17 Main
 
@@ -2240,9 +2207,8 @@ def my_method(
   ...
 ```
 
-`pylint`
-allows you to move the closing parenthesis to a new line and align with the
-opening one, but this is less readable.
+Moving the closing parenthesis to a new line to align with the opening one is
+allowed but less readable.
 
 ```python
 No:
@@ -2379,10 +2345,10 @@ ComplexTFMap: TypeAlias = Mapping[str, _LossAndGradient]
 You can disable type checking on a line with the special comment `# type:
 ignore`.
 
-`pytype` has a disable option for specific errors (similar to lint):
+`ty` has a disable option for specific errors (similar to lint):
 
 ```python
-# pytype: disable=attribute-error
+# ty: ignore[attribute-access]
 ```
 
 #### 2.19.8 Typing Variables
