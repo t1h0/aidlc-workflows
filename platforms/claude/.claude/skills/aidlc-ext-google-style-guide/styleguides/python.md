@@ -15,17 +15,7 @@ C and C++. Because of the dynamic nature of Python, some
 warnings may be incorrect; however, spurious warnings should be fairly
 infrequent.
 
-#### 1.1.2 Pros
-
-Catches easy-to-miss errors like typos, using-vars-before-assignment, etc.
-
-#### 1.1.3 Cons
-
-`pylint`
-isn't perfect. To take advantage of it, sometimes we'll need to write around it,
-suppress its warnings or fix it.
-
-#### 1.1.4 Decision
+#### 1.1.2 Decision
 
 Make sure you run
 `pylint`
@@ -90,17 +80,7 @@ classes, or functions.
 
 Reusability mechanism for sharing code from one module to another.
 
-#### 1.2.2 Pros
-
-The namespace management convention is simple. The source of each identifier is
-indicated in a consistent way; `x.Obj` says that object `Obj` is defined in
-module `x`.
-
-#### 1.2.3 Cons
-
-Module names can still collide. Some module names are inconveniently long.
-
-#### 1.2.4 Decision
+#### 1.2.2 Decision
 
 - Use `import x` for importing packages and modules.
 - Use `from x import y` where `x` is the package prefix and `y` is the module
@@ -144,17 +124,7 @@ Exemptions from this rule:
 
 Import each module using the full pathname location of the module.
 
-#### 1.3.1 Pros
-
-Avoids conflicts in module names or incorrect imports due to the module search
-path not being what the author expected. Makes it easier to find modules.
-
-#### 1.3.2 Cons
-
-Makes it harder to deploy code because you have to replicate the package
-hierarchy. Not really a problem with modern deployment mechanisms.
-
-#### 1.3.3 Decision
+#### 1.3.1 Decision
 
 All new code should import each module by its full package name.
 
@@ -202,19 +172,7 @@ Exceptions are allowed but must be used carefully.
 Exceptions are a means of breaking out of normal control flow to handle errors
 or other exceptional conditions.
 
-#### 1.4.2 Pros
-
-The control flow of normal operation code is not cluttered by error-handling
-code. It also allows the control flow to skip multiple frames when a certain
-condition occurs, e.g., returning from N nested functions in one step instead of
-having to plumb error codes through.
-
-#### 1.4.3 Cons
-
-May cause the control flow to be confusing. Easy to miss error cases when making
-library calls.
-
-#### 1.4.4 Decision
+#### 1.4.2 Decision
 
 Exceptions must follow certain conditions:
 
@@ -314,22 +272,7 @@ Avoid mutable global state.
 Module-level values or class attributes that can get mutated during program
 execution.
 
-#### 1.5.2 Pros
-
-Occasionally useful.
-
-#### 1.5.3 Cons
-
-- Breaks encapsulation: Such design can make it hard to achieve valid
-    objectives. For example, if global state is used to manage a database
-    connection, then connecting to two different databases at the same time
-    (such as for computing differences during a migration) becomes difficult.
-    Similar problems easily arise with global registries.
-
-- Has the potential to change module behavior during the import, because
-    assignments to global variables are done when the module is first imported.
-
-#### 1.5.4 Decision
+#### 1.5.2 Decision
 
 Avoid mutable global state.
 
@@ -357,19 +300,7 @@ A class can be defined inside of a method, function, or class. A function can be
 defined inside a method or function. Nested functions have read-only access to
 variables defined in enclosing scopes.
 
-#### 1.6.2 Pros
-
-Allows definition of utility classes and functions that are only used inside of
-a very limited scope. Very
-[ADT](https://en.wikipedia.org/wiki/Abstract_data_type)-y. Commonly used for
-implementing decorators.
-
-#### 1.6.3 Cons
-
-Nested functions and classes cannot be directly tested. Nesting can make the
-outer function longer and less readable.
-
-#### 1.6.4 Decision
+#### 1.6.2 Decision
 
 They are fine with some caveats. Avoid nested functions or classes except when
 closing over a local value other than `self` or `cls`. Do not nest a function
@@ -386,17 +317,7 @@ List, Dict, and Set comprehensions as well as generator expressions provide a
 concise and efficient way to create container types and iterators without
 resorting to the use of traditional loops, `map()`, `filter()`, or `lambda`.
 
-#### 1.7.2 Pros
-
-Simple comprehensions can be clearer and simpler than other dict, list, or set
-creation techniques. Generator expressions can be very efficient, since they
-avoid the creation of a list entirely.
-
-#### 1.7.3 Cons
-
-Complicated comprehensions or generator expressions can be hard to read.
-
-#### 1.7.4 Decision
+#### 1.7.2 Decision
 
 Comprehensions are allowed, however multiple `for` clauses or filter expressions
 are not permitted. Optimize for readability, not conciseness.
@@ -458,18 +379,7 @@ dictionaries, and files.
 Container types, like dictionaries and lists, define default iterators and
 membership test operators ("in" and "not in").
 
-#### 1.8.2 Pros
-
-The default iterators and operators are simple and efficient. They express the
-operation directly, without extra method calls. A function that uses default
-operators is generic. It can be used with any type that supports the operation.
-
-#### 1.8.3 Cons
-
-You can't tell the type of objects by reading the method names (unless the
-variable has type annotations). This is also an advantage.
-
-#### 1.8.4 Decision
+#### 1.8.2 Decision
 
 Use default iterators and operators for types that support them, like lists,
 dictionaries, and files. The built-in types define iterator methods, too. Prefer
@@ -498,18 +408,7 @@ A generator function returns an iterator that yields a value each time it
 executes a yield statement. After it yields a value, the runtime state of the
 generator function is suspended until the next value is needed.
 
-#### 1.9.2 Pros
-
-Simpler code, because the state of local variables and control flow are
-preserved for each call. A generator uses less memory than a function that
-creates an entire list of values at once.
-
-#### 1.9.3 Cons
-
-Local variables in the generator will not be garbage collected until the
-generator is either consumed to exhaustion or itself garbage collected.
-
-#### 1.9.4 Decision
+#### 1.9.2 Decision
 
 Fine. Use "Yields:" rather than "Returns:" in the docstring for generator
 functions.
@@ -528,17 +427,7 @@ with a `lambda`.
 
 Lambdas define anonymous functions in an expression, as opposed to a statement.
 
-#### 1.10.2 Pros
-
-Convenient.
-
-#### 1.10.3 Cons
-
-Harder to read and debug than local functions. The lack of names means stack
-traces are more difficult to understand. Expressiveness is limited because the
-function may only contain an expression.
-
-#### 1.10.4 Decision
+#### 1.10.2 Decision
 
 Lambdas are allowed. If the code inside the lambda function spans multiple lines
 or is longer than 60-80 chars, it might be better to define it as a regular
@@ -558,16 +447,7 @@ Conditional expressions (sometimes called a “ternary operator”) are mechanis
 that provide a shorter syntax for if statements. For example: `x = 1 if cond
 else 2`.
 
-#### 1.11.2 Pros
-
-Shorter and more convenient than an if statement.
-
-#### 1.11.3 Cons
-
-May be harder to read than an if statement. The condition may be difficult to
-locate if the expression is long.
-
-#### 1.11.4 Decision
+#### 1.11.2 Decision
 
 Okay to use for simple cases. Each portion must fit on one line:
 true-expression, if-expression, else-expression. Use a complete if statement
@@ -605,22 +485,7 @@ e.g., `def foo(a, b=0):`. If `foo` is called with only one argument, `b` is set
 to 0. If it is called with two arguments, `b` has the value of the second
 argument.
 
-#### 1.12.2 Pros
-
-Often you have a function that uses lots of default values, but on rare
-occasions you want to override the defaults. Default argument values provide an
-easy way to do this, without having to define lots of functions for the rare
-exceptions. As Python does not support overloaded methods/functions, default
-arguments are an easy way of "faking" the overloading behavior.
-
-#### 1.12.3 Cons
-
-Default arguments are evaluated once at module load time. This may cause
-problems if the argument is a mutable object such as a list or a dictionary. If
-the function modifies the object (e.g., by appending an item to a list), the
-default value is modified.
-
-#### 1.12.4 Decision
+#### 1.12.2 Decision
 
 Okay to use with the following caveat:
 
@@ -664,21 +529,7 @@ and unsurprising.
 A way to wrap method calls for getting and setting an attribute as a standard
 attribute access.
 
-#### 1.13.2 Pros
-
-- Allows for an attribute access and assignment API rather than
-    [getter and setter](#215-getters-and-setters) method calls.
-- Can be used to make an attribute read-only.
-- Allows calculations to be lazy.
-- Provides a way to maintain the public interface of a class when the
-    internals evolve independently of class users.
-
-#### 1.13.3 Cons
-
-- Can hide side-effects much like operator overloading.
-- Can be confusing for subclasses.
-
-#### 1.13.4 Decision
+#### 1.13.2 Decision
 
 Properties are allowed, but, like operator overloading, should only be used when
 necessary and match the expectations of typical attribute access; follow the
@@ -707,16 +558,7 @@ Python evaluates certain values as `False` when in a boolean context. A quick
 "rule of thumb" is that all "empty" values are considered false, so `0, None,
 [], {}, ''` all evaluate as false in a boolean context.
 
-#### 1.14.2 Pros
-
-Conditions using Python booleans are easier to read and less error-prone. In
-most cases, they're also faster.
-
-#### 1.14.3 Cons
-
-May look strange to C/C++ developers.
-
-#### 1.14.4 Decision
+#### 1.14.2 Decision
 
 Use the "implicit" false if possible, e.g., `if foo:` rather than `if foo !=
 []:`. There are a few caveats that you should keep in mind though:
@@ -792,33 +634,7 @@ def get_adder(summand1: float) -> Callable[[float], float]:
     return adder
 ```
 
-#### 1.16.2 Pros
-
-Often results in clearer, more elegant code. Especially comforting to
-experienced Lisp and Scheme (and Haskell and ML and ...) programmers.
-
-#### 1.16.3 Cons
-
-Can lead to confusing bugs, such as this example based on
-[PEP-0227](https://peps.python.org/pep-0227/):
-
-```python
-i = 4
-def foo(x: Iterable[int]):
-    def bar():
-        print(i, end='')
-    # ...
-    # A bunch of code here
-    # ...
-    for i in x:  # Ah, i *is* local to foo, so this is what bar sees
-        print(i, end='')
-    bar()
-```
-
-So `foo([1, 2, 3])` will print `1 2 3 3`,
-not `1 2 3 4`.
-
-#### 1.16.4 Decision
+#### 1.16.2 Decision
 
 Okay to use.
 
@@ -851,20 +667,7 @@ class C:
     method = my_decorator(method)
 ```
 
-#### 1.17.2 Pros
-
-Elegantly specifies some transformation on a method; the transformation might
-eliminate some repetitive code, enforce invariants, etc.
-
-#### 1.17.3 Cons
-
-Decorators can perform arbitrary operations on a function's arguments or return
-values, resulting in surprising implicit behavior. Additionally, decorators
-execute at object definition time. For module-level objects (classes, module
-functions, ...) this happens at import time. Failures in decorator code are
-pretty much impossible to recover from.
-
-#### 1.17.4 Decision
+#### 1.17.2 Decision
 
 Use decorators judiciously when there is a clear advantage. Decorators should
 follow the same import and naming guidelines as functions. A decorator docstring
@@ -913,19 +716,7 @@ inheritance, object reparenting, import hacks, reflection (e.g. some uses of
 `getattr()`), modification of system internals, `__del__` methods implementing
 customized cleanup, etc.
 
-#### 1.19.2 Pros
-
-These are powerful language features. They can make your code more compact.
-
-#### 1.19.3 Cons
-
-It's very tempting to use these "cool" features when they're not absolutely
-necessary. It's harder to read, understand, and debug code that's using unusual
-features underneath. It doesn't seem that way at first (to the original author),
-but when revisiting the code, it tends to be more difficult than code that is
-longer but is straightforward.
-
-#### 1.19.4 Decision
+#### 1.19.2 Decision
 
 Avoid these features in your code.
 
@@ -943,21 +734,7 @@ Being able to turn on some of the more modern features via `from __future__
 import` statements allows early use of features from expected future Python
 versions.
 
-#### 1.20.2 Pros
-
-This has proven to make runtime version upgrades smoother as changes can be made
-on a per-file basis while declaring compatibility and preventing regressions
-within those files. Modern code is more maintainable as it is less likely to
-accumulate technical debt that will be problematic during future runtime
-upgrades.
-
-#### 1.20.3 Cons
-
-Such code may not work on very old interpreter versions prior to the
-introduction of the needed future statement. The need for this is more common in
-projects supporting an extremely wide variety of environments.
-
-#### 1.20.4 Decision
+#### 1.20.2 Decision
 
 ##### from \_\_future\_\_ imports
 
@@ -1008,21 +785,7 @@ You can also declare the type of a variable using similar syntax:
 a: SomeType = some_func()
 ```
 
-#### 1.21.2 Pros
-
-Type annotations improve the readability and maintainability of your code. The
-type checker will convert many runtime errors to build-time errors, and reduce
-your ability to use [Power Features](#119-power-features).
-
-#### 1.21.3 Cons
-
-You will have to keep the type declarations up to date.
-You might see type errors that you think are
-valid code. Use of a
-[type checker](https://github.com/google/pytype)
-may reduce your ability to use [Power Features](#119-power-features).
-
-#### 1.21.4 Decision
+#### 1.21.2 Decision
 
 You are strongly encouraged to enable Python type analysis when updating code.
 When adding or modifying public APIs, include type annotations and enable
